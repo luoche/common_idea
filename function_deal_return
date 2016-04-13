@@ -1,0 +1,95 @@
+/**
+     * @inheritdoc
+     */
+    public static function dealMulAttr($return,$deal_arr,$is_mul=true)
+    {
+        if (!is_array($return) || !is_array($deal_arr)) {
+            return false;
+        }
+        if ($is_mul) {
+            foreach ($deal_arr as $ko => $vo) {
+                foreach ($return as $ko1 => $vo1) {
+                    if (!empty($return[$ko1][$ko])) {
+                        $return[$ko1][$ko] = explode($vo,$return[$ko1][$ko]);
+                    } else {
+                        $return[$ko1][$ko] = [];
+                    }
+                }
+            }
+        } else {
+            foreach ($deal_arr as $ko => $vo) {
+                if (!empty($return[$ko])) {
+                    $return[$ko] = explode($vo,$return[$ko]);
+                } else {
+                    $return[$ko] = [];
+                }
+            }
+        }
+        return $return;
+    }
+
+    //处理空的默认值
+    public static function dealNullField($return,$deal_arr,$is_mul=true)
+    {
+        if (!is_array($return) || !is_array($deal_arr)) {
+            return false;
+        }
+        if ($is_mul) {
+            foreach ($deal_arr as $ko => $vo) {
+                foreach ($return as $ko1 => $vo1) {
+                    if (empty($return[$ko1][$ko])) {
+                        $return[$ko1][$ko] = $vo;
+                    }
+                }
+            }
+        } else {
+            foreach ($deal_arr as $ko => $vo) {
+                if (empty($return[$ko])) {
+                    $return[$ko] = $vo;
+                }
+            }
+        }
+        return $return;
+    }
+
+
+    public static function dealDateFormatField($return,$deal_arr,$is_mul=true)
+    {
+        if (!is_array($return) || !is_array($deal_arr)) {
+            return false;
+        }
+        if ($is_mul) {
+            foreach ($deal_arr as $ko => $vo) {
+                foreach ($return as $ko1 => $vo1) {
+                    if (!empty($return[$ko1][$ko])) {
+                        $return[$ko1][$ko] = Yii::$app->formatter->asDatetime($return[$ko1][$ko],'php:Y-m-d h:i:s');
+                    }
+                }
+            }
+        } else {
+            foreach ($deal_arr as $ko => $vo) {
+                if (!empty($return[$ko])) {
+                    $return[$ko] = Yii::$app->formatter->asDatetime($return[$ko],'php:Y-m-d h:i:s');
+                }
+            }
+        }
+        return $return;
+    }
+
+    /**
+     * 交换数组的k-v值
+     * @dates  2016-02-25
+     * @author wangyafei
+     * @param  array     $arr 处理前数组
+     * @return array          处理后数组
+     */
+    public static function arrayKeyValueExchange ($arr)
+    {
+        $new_arr = [];
+        if (is_array($arr) && !empty($arr)) {
+            foreach ($arr as $ko => $vo ) {
+                $new_arr[$vo] = $ko;
+            }
+        }
+        return $new_arr;
+    }
